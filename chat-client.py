@@ -1,24 +1,20 @@
 #!/usr/bin/python
 #coding=utf-8
-#python v2.7
-#client
 
 import socket,threading,time,os
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # 连接对方(server)ip+端口:
-    ipaddress=raw_input("Please input ip address of other side:\n")
-    port=9999
-    s.connect((ipaddress, port))
+    # 监听端口:
+    s.connect(('127.0.0.1', 9999))
     print 'Waiting for connection...'
-#    while True:
-        # 接受一个新连接:
-        # 创建新线程来处理TCP连接:
     t1 = threading.Thread(target=receiveinfo, args=(s,))
+    t1.setDaemon(True)
     t1.start()
     t2 = threading.Thread(target=sendinfo, args=(s,))
     t2.start()
     t2.join()
+    s.close()
+    exit(0)
 
 def receiveinfo(sock):
     while True:
@@ -28,23 +24,23 @@ def receiveinfo(sock):
                 print '\n对方:',buf
             else:
                 continue
-        except BaseException:
-            pass
+        except BaseException,e:
+            print e
+            break
 
 def sendinfo(sock):
     while True:
         try:
             buf=raw_input()
             if buf:
+                sock.send(buf)
                 if buf=='exit':
                     break
-                sock.send(buf)
             else:
                 continue
-        except BaseException:
-            pass
-    sock.close()
-#    os.abort()
+        except BaseException,e:
+            print e
+            break 
 
 if __name__=='__main__':
     main()
