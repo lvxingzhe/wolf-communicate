@@ -1,5 +1,7 @@
 #!/usr/bin/python
 #coding=utf-8
+#python v2.7
+#server
 
 import socket,threading,time
 
@@ -52,7 +54,6 @@ def receiveinfo(sock, addr):
     print 'Connection from %s:%s closed. by reveiveinfo thread' % addr
 
 def sendinfo(sock, addr):
-    print 'Accept new connection from %s:%s...' % addr
     sock.send('welcome!connecting successed...')
     myloop=True
     while myloop:

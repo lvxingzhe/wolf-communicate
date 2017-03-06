@@ -1,11 +1,15 @@
 #!/usr/bin/python
 #coding=utf-8
+#python v2.7
+#client
 
 import socket,threading,time,os
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 监听端口:
-    s.connect(('127.0.0.1', 9999))
+    ipaddress = raw_input("Please input ip address of other side:\n")
+    port = 9999
+    s.connect((ipaddress, port))
     print 'Waiting for connection...'
     t1 = threading.Thread(target=receiveinfo, args=(s,))
     t1.setDaemon(True)
